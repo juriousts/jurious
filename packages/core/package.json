@@ -13,7 +13,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@jurious/webpack-declaration-files": "^1.0.3",
+        "@jurious/webpack-declaration-files": "^1.0.0",
         "@types/node": "^10.5.1",
         "clean-webpack-plugin": "^0.1.19",
         "source-map-loader": "^0.2.4",

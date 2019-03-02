@@ -1,7 +1,7 @@
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
-const DeclarationFilesPlugin = require("@ahrakio/witty-webpack-declaration-files");
+const DeclarationFilesPlugin = require("@jurious/webpack-declaration-files");
 const webpack = require("webpack");
 
 // Clean configurations

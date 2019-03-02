@@ -4,10 +4,10 @@ import * as http from "http";
 import { RequestHandler } from "../http/RequestHandler";
 import { Request } from "../http/Request";
 import { Response } from "../http/Response";
-import { RouteInstance } from "@ahrakio/witty-router";
+import { RouteInstance } from "@jurious/router";
 import { MiddlewareHandler } from "../http/middlewares/MiddlewareHandler";
 import { NetworkProtocol } from "./Constants";
-import { Router } from "@ahrakio/witty-router";
+import { Router } from "@jurious/router";
 
 export class HttpAdapter extends NetworkAdapter {
     constructor(name: string, port: number) {

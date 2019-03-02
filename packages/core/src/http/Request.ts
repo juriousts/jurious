@@ -1,8 +1,8 @@
 import { Headers } from "./Headers";
-import { RouteInstance, RouteTargetParser } from "@ahrakio/witty-router";
+import { RouteInstance, RouteTargetParser } from "@jurious/router";
 import { IncomingMessage } from "http";
 import { parse } from "url";
-import { Params } from "@ahrakio/witty-router";
+import { Params } from "@jurious/router";
 
 export class Request {
     private req: IncomingMessage;
