@@ -1,0 +1,1 @@
+export { WittyApp } from './WittyApp';
