@@ -35,8 +35,8 @@ export class ServeCommand extends CommandAbstract {
         console.log(cli_path);
         console.log(proj_path);
 
-        if (findFile("witty.json") === null) {
-            console.log("Not in a witty project folder");
+        if (findFile("jurious.json") === null) {
+            console.log("Not in a jurious project folder");
             return;
         }
 
@@ -104,7 +104,7 @@ export class ServeCommand extends CommandAbstract {
                     }
                 }),
                 new WebpackBar({
-                    name: "Witty"
+                    name: "Jurious"
                 })
             ]
         };

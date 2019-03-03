@@ -4,10 +4,10 @@ import {AbstractClassTemplate} from "./AbstractClassTemplate";
 export class AppTemplate extends AbstractClassTemplate implements IFileTemplate {
     constructor() {
         super();
-        this.import = ['WittyApp', 'AppAbstract'];
+        this.import = ['JuriousApp', 'AppAbstract'];
         this.class.extends = "AppAbstract";
         this.class.class_decorators = [
-                { name: 'WittyApp',
+                { name: 'JuriousApp',
                     params: JSON.stringify({controllers: [], middlewares: []},null, "\t").replace(/["']/gi, "")
                 }];
     }

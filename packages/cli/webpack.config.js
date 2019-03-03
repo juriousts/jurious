@@ -5,7 +5,7 @@ var nodeExternals = require("webpack-node-externals");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
 const WebpackBar = require("webpackbar");
-const DeclarationFilesPlugin = require("@ahrakio/witty-webpack-declaration-files");
+const DeclarationFilesPlugin = require("@jurious/webpack-declaration-files");
 
 // Clean configurations
 const clean_paths = ["dist"];
@@ -51,7 +51,7 @@ module.exports = {
         new CleanWebpackPlugin(clean_paths, clean_options),
         new UglifyJsPlugin(),
         new WebpackBar({
-			name: "Witty"
+			name: "Jurious"
 		}),
         new DeclarationFilesPlugin({
 			merge: true,

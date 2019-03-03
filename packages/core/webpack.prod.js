@@ -54,7 +54,7 @@ module.exports = {
                 "Response",
                 "Router",
                 "AppAbstract",
-                "WittyApp",
+                "JuriousApp",
                 "Controller",
                 "Middleware",
                 "Route",

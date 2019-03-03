@@ -12,7 +12,7 @@ export class NewProjectCommand extends CommandAbstract {
         super();
         this.alias = 'nw';
         this.name = 'new';
-        this.description = "create new witty project.";
+        this.description = "create new jurious project.";
         this.params = ['projectName'];
         this.options =[];
     }
@@ -24,11 +24,11 @@ export class NewProjectCommand extends CommandAbstract {
         console.log('start npm init');
         let init_outpot = execSync('npm init -y', {encoding:'ascii'});
         console.log(init_outpot);
-        console.log('start install npm witty dependencies');
-        let install_outpot = execSync('npm install @ahrakio/witty-core', {encoding:'ascii'});
+        console.log('start install npm jurious dependencies');
+        let install_outpot = execSync('npm install @jurious/core', {encoding:'ascii'});
         console.log(install_outpot);
 
-        let witty_obj = {
+        let jurious_obj = {
             "defaultPaths": {
                 "app": ".",
                 "controller": "./app/http/controllers",
@@ -51,7 +51,7 @@ export class NewProjectCommand extends CommandAbstract {
 
         let generator = new TemplateGenerator();
         console.log('start create project files.');
-        if (generator.writeTSFileFromTemplate(witty_obj.defaultPaths.app, "App", new AppTemplate())) {
+        if (generator.writeTSFileFromTemplate(jurious_obj.defaultPaths.app, "App", new AppTemplate())) {
             let path_to_api : string = "./app/http/routes";
             touchDir(path_to_api);
             if (generator.writeTSFileFromTemplate(path_to_api, 'api', new ApiTemplate())) {
@@ -72,7 +72,7 @@ export class NewProjectCommand extends CommandAbstract {
                             "**/*"
                         ]
                     };
-                    if (writeJsonFile(witty_obj, './witty.json')) {
+                    if (writeJsonFile(jurious_obj, './jurious.json')) {
                         if (writeJsonFile(tsconfig, './tsconfig.json')) {
                             console.log('project '+ name + ' created successfully.');
                             if (writeJsonFile(structure_obj, './structure.json')) {
@@ -84,7 +84,7 @@ export class NewProjectCommand extends CommandAbstract {
                             console.log("failed to create tsconfig.json");
                         }
                     } else {
-                        console.log("failed to create witty.json");
+                        console.log("failed to create jurious.json");
                     }
                 } else {
                     console.log("failed to create index.ts");
@@ -93,7 +93,7 @@ export class NewProjectCommand extends CommandAbstract {
                 console.log("failed to create api.ts");
             }
         } else {
-            console.log("failed to write App.ts at "+ witty_obj.defaultPaths.app);
+            console.log("failed to write App.ts at "+ jurious_obj.defaultPaths.app);
         }
 
 

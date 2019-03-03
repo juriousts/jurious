@@ -8,7 +8,7 @@ import { NetworkAdapter } from "../adapters/NetworkAdapter";
 
 import * as path from "path";
 // prettier-ignore
-export function WittyApp<C extends Controller, M extends Middleware>(
+export function JuriousApp<C extends Controller, M extends Middleware>(
     details: {
         controllers: { new (): C }[],
         middlewares: { new (): M }[]

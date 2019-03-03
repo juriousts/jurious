@@ -39,8 +39,8 @@ export class BuildCommand extends CommandAbstract {
         let cli_path = path.resolve(__dirname);
         let proj_path = process.cwd();
 
-        if (findFile("witty.json") === null) {
-            console.log("Not in a witty project folder");
+        if (findFile("jurious.json") === null) {
+            console.log("Not in a jurious project folder");
             return;
         }
 
@@ -91,9 +91,9 @@ export class BuildCommand extends CommandAbstract {
                 filename: "index.js",
                 path: outputPath,
                 devtoolModuleFilenameTemplate: (info) => {
-                    let regex = /.*(witty-router|witty-core)(.*)/g;
+                    let regex = /.*(router|core)(.*)/g;
                     let match = regex.exec(info.absoluteResourcePath);
-                    let concat = "node_modules/@ahrakio/";
+                    let concat = "node_modules/@jurious/";
                     if (match === null) {
                         return info.absoluteResourcePath;
                     }
@@ -120,7 +120,7 @@ export class BuildCommand extends CommandAbstract {
             plugins: [
                 new CleanWebpackPlugin(outputPath, { watch: true }),
                 new WebpackBar({
-                    name: "Witty"
+                    name: "Jurious"
                 })
             ]
         };

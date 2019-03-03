@@ -1,1 +1,1 @@
-export { WittyApp } from './WittyApp';
+export { JuriousApp } from './JuriousApp';

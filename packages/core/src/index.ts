@@ -1,4 +1,4 @@
 export { NetworkAdapter } from "./adapters/index";
-export { WittyApp } from "./decorators/WittyApp";
+export { JuriousApp } from "./decorators/JuriousApp";
 export { AppAbstract } from "./AppAbstract";
 export { Request, Response, Middleware, Controller, Headers } from "./http/index";

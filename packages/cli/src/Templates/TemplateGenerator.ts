@@ -2,7 +2,7 @@ import { IDecoratorTemplates } from "./IDecoratorTemplates";
 import { createWriteStream, WriteStream } from "fs";
 import { IFileTemplate } from "./IFileTemplate";
 
-const npm_name = "@ahrakio/witty-core";
+const npm_name = "@jurious/core";
 
 export class TemplateGenerator {
     constructor() {}

@@ -7,7 +7,7 @@ import {IFileTemplate} from "../Templates/IFileTemplate";
 import {CommandAbstract} from "./CommandAbstract";
 import {TemplateGenerator} from "../Templates/TemplateGenerator";
 
-const json_file = "witty.json";
+const json_file = "jurious.json";
 
 export class GenerateCommand extends CommandAbstract {
      constructor() {
