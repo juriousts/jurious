@@ -1,0 +1,9 @@
+{
+    "id": 3,
+    "title": "Jurious Core",
+    "commands": [
+        "npm i",
+        "npm link ../router",
+        "npm run dev"        
+    ]
+}
