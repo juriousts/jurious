@@ -1,102 +1,84 @@
+import { AppFileTemplate } from './../Templates/NewProjectTemplate/AppTemplate/AppFileTemplate';
+import { ApiFileTemplate } from './../Templates/NewProjectTemplate/ApiTemplate/ApiFileTemplate';
+import { FolderTemplate, JsonFileTemplate } from '@jurious/templates';
 import {execSync} from 'child_process';
-import {chdir} from 'process';
 import {CommandAbstract} from './CommandAbstract';
-import {TemplateGenerator} from "../Templates/TemplateGenerator";
-import {AppTemplate} from "../Templates/AppTemplate";
-import {touchDir, writeJsonFile} from "../Common/FileSystem"
-import {IndexTemplate} from "../Templates/IndexTemplate";
-import {ApiTemplate} from "../Templates/ApiTemplate";
+import { IndexFileTemplate } from '../Templates/NewProjectTemplate/IndexTemplate/IndexFileTemplate';
+import { Command } from 'commander';
+
+const juriousJsonFile = {
+    defaultPaths: {
+        app: ".",
+        controller: "./app/http/controllers",
+        middleware: "./app/http/middlewares"
+    },
+    metadata: {}
+};
+
+const structureJsonFile = {
+    connections: [
+        {
+            name: "",
+            protocol: "HTTP",
+            host: "127.0.0.1",
+            port: 8400
+        }
+    ],
+    microservices: []
+};
+
+const tsconfigJsonFile = {
+    compilerOptions: {
+        target: "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */
+        module: "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+        declaration: false, /* Generates corresponding '.d.ts' file. */
+        strict: true, /* Enable all strict type-checking options. */
+        noImplicitAny: false, /* Raise error on expressions and declarations with an implied 'any' type. */
+        strictPropertyInitialization: false, /* Enable strict checking of property initialization in classes. */
+        moduleResolution: "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+        esModuleInterop: true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+        experimentalDecorators: true, /* Enables experimental support for ES7 decorators. */
+    },
+    include: [
+        "**/*"
+    ]
+};
 
 export class NewProjectCommand extends CommandAbstract {
     constructor() {
         super();
         this.alias = 'nw';
         this.name = 'new';
-        this.description = "create new jurious project.";
+        this.description = "Create a new Jurious project app";
         this.params = ['projectName'];
-        this.options =[];
+        this.options = [
+            {
+                name: "empty",
+                char: "e",
+                params: [],
+                description: "Do not install dependancies, only start npm project"
+            }
+        ];
     }
 
-    handle(name:string, options:any) {
-        console.log ('start create new project ' + name);
-        touchDir(name);
-        chdir(`./${name}`);
-        console.log('start npm init');
-        let init_outpot = execSync('npm init -y', {encoding:'ascii'});
-        console.log(init_outpot);
-        console.log('start install npm jurious dependencies');
-        let install_outpot = execSync('npm install @jurious/core', {encoding:'ascii'});
-        console.log(install_outpot);
+    public handle(name: string, command: Command) {
+        let projFolder = 
+            new FolderTemplate(name)
+                .addFile(new JsonFileTemplate("jurious.json", juriousJsonFile))
+                .addFile(new JsonFileTemplate("structure.json", structureJsonFile))
+                .addFile(new JsonFileTemplate("tsconfig.json", tsconfigJsonFile))
+                .addFile(new IndexFileTemplate("index.ts"))
+                .addFile(new AppFileTemplate("app.ts"));
 
-        let jurious_obj = {
-            "defaultPaths": {
-                "app": ".",
-                "controller": "./app/http/controllers",
-                "middleware": "./app/http/middlewares"
-            },
-            "metadata": {}
-        };
+        projFolder.addFolder("App/Http/Routes")
+            .addFile(new ApiFileTemplate("api.ts"));
 
-        let structure_obj = {
-                "connections": [
-                    {
-                        "name": "",
-                        "protocol": "HTTP",
-                        "host": "127.0.0.1",
-                        "port": 8400
-                    }
-                ],
-                "microservices": []
-            };
+        projFolder.generate();
 
-        let generator = new TemplateGenerator();
-        console.log('start create project files.');
-        if (generator.writeTSFileFromTemplate(jurious_obj.defaultPaths.app, "App", new AppTemplate())) {
-            let path_to_api : string = "./app/http/routes";
-            touchDir(path_to_api);
-            if (generator.writeTSFileFromTemplate(path_to_api, 'api', new ApiTemplate())) {
-                if (generator.writeTSFileFromTemplate('.', 'index', new IndexTemplate())) {
-                    let tsconfig = {
-                        "compilerOptions": {
-                            "target": "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */
-                            "module": "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-                            "declaration": false, /* Generates corresponding '.d.ts' file. */
-                            "strict": true, /* Enable all strict type-checking options. */
-                            "noImplicitAny": false, /* Raise error on expressions and declarations with an implied 'any' type. */
-                            "strictPropertyInitialization": false, /* Enable strict checking of property initialization in classes. */
-                            "moduleResolution": "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-                            "esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-                            "experimentalDecorators": true, /* Enables experimental support for ES7 decorators. */
-                        },
-                        "include": [
-                            "**/*"
-                        ]
-                    };
-                    if (writeJsonFile(jurious_obj, './jurious.json')) {
-                        if (writeJsonFile(tsconfig, './tsconfig.json')) {
-                            console.log('project '+ name + ' created successfully.');
-                            if (writeJsonFile(structure_obj, './structure.json')) {
-                                console.log('project '+ name + ' created successfully.');
-                            } else {
-                                console.log("failed to create tsconfig.json");
-                            }
-                        } else {
-                            console.log("failed to create tsconfig.json");
-                        }
-                    } else {
-                        console.log("failed to create jurious.json");
-                    }
-                } else {
-                    console.log("failed to create index.ts");
-                }
-            } else {
-                console.log("failed to create api.ts");
-            }
-        } else {
-            console.log("failed to write App.ts at "+ jurious_obj.defaultPaths.app);
+        execSync('npm init -y', { encoding:'ascii' });
+
+        if (!command.empty) {
+            execSync('npm install @jurious/core', { encoding:'ascii' });
         }
-
-
-
     }
 }

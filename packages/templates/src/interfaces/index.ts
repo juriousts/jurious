@@ -1,0 +1,1 @@
+export { ITemplate } from './ITemplate';

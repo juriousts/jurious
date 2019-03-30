@@ -1,8 +1,10 @@
 {
-    "id": 1,
+    "id": 2,
+    "dependancies": [1],
     "title": "Jurious CLI",
     "commands": [
         "npm i",
+        "npm link ../templates",
         "npm run build",
         "npm i -g ."
     ]

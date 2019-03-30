@@ -1,9 +1,10 @@
 const { execSync } = require('child_process');
 const { readdirSync, readFileSync, existsSync } = require('fs');
 const { resolve } = require('path');
+const { Graph, alg } = require("@dagrejs/graphlib");
 
 const setupFile = 'setup.json';
-let files = [];
+let filesGraph = new Graph();
 
 const packagesDir = resolve(__dirname, '..', 'packages');
 const packages = readdirSync(packagesDir);
@@ -16,13 +17,22 @@ for (let package of packages) {
     let file = JSON.parse(readFileSync(setupFilePath).toString());
 
     file.path = resolve(packagesDir, package);
-    files.push(file);
+    filesGraph.setNode(file.id, file);
 }
 
-files.sort((f1, f2) => f1.id > f2.id ? 1 : -1);
+for (let node of filesGraph.nodes()) {
+    let file = filesGraph.node(node);
+    for (let dep of file.dependancies) {
+        filesGraph.setEdge(node, dep);
+    }
+}
 
-for (file of files) {
-    process.chdir(file.path);
+let nodes = alg.topsort(filesGraph).reverse();
+
+for (node of nodes) {
+    let file = filesGraph.node(node);
+
+    // process.chdir(file.path);
     console.info(`------------------------------------------------`);
     console.info(`- Installing module: ${file.title}             -`);
     for (command of file.commands) {

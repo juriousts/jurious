@@ -1,6 +1,6 @@
 import commander, { Command } from 'commander';
 import { CommandAbstract } from './Commands/CommandAbstract';
-import * as commands from "./Commands/CLICommands";
+import * as commands from "./Commands";
 
 
 interface ExtendedOptions extends commander.CommandOptions {

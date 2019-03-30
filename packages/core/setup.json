@@ -1,5 +1,6 @@
 {
     "id": 3,
+    "dependancies": [4],
     "title": "Jurious Core",
     "commands": [
         "npm i",

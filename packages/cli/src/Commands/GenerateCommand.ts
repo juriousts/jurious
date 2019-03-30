@@ -1,21 +1,18 @@
-import {WriteStream, createWriteStream, readFileSync} from "fs";
-import {chdir} from 'process';
-import {sep} from 'path';
-import {touchDir, readJsonFile, findFile} from '../Common/FileSystem';
-import  * as templates from  "../Templates/AllFileTemplates"
-import {IFileTemplate} from "../Templates/IFileTemplate";
+import {WriteStream, createWriteStream, readFileSync, writeFileSync, openSync} from "fs";
+import {sep, resolve} from 'path';
+import * as templates from '../Templates';
 import {CommandAbstract} from "./CommandAbstract";
-import {TemplateGenerator} from "../Templates/TemplateGenerator";
-
-const json_file = "jurious.json";
+import { ProjectPathMiddleware } from '../Middlewares/ProjectPathMiddleware';
+import { TemplateTypeMiddleware } from '../Middlewares/TemplateTypeMiddleware';
+import { touchDir } from '../Common/FileSystem';
 
 export class GenerateCommand extends CommandAbstract {
      constructor() {
         super();
         this.name = 'generate';
-        this.alias = 'gn';
+        this.alias = 'g';
         this.params =  ['type', 'filename'];
-        this.description = 'generate new component from given type';
+        this.description = 'Generates a new component from given type';
         this.options = [
             { 
                 name: "path",
@@ -31,16 +28,6 @@ export class GenerateCommand extends CommandAbstract {
             }
         ];
 
-    }
-
-    private checkTemplate(type: string) : boolean{
-        return type in templates;
-    }
-
-    private getTemplate(type: string) : IFileTemplate|null {
-        if (this.checkTemplate(type)) {
-            return new templates[type]();
-        } else return null;
     }
 
     private editApp(app_path:string, type:string, new_class:string, new_path:string):void {
@@ -67,59 +54,24 @@ export class GenerateCommand extends CommandAbstract {
             console.log(err);
             return;
         }
-     }
+    }
 
+    @ProjectPathMiddleware()
+    @TemplateTypeMiddleware()
+    public handle(type: string, filename: string, options: any): void {
+        const juriousProperties = JSON.parse(readFileSync(resolve(process.cwd(), 'jurious.json')).toString());
+        let path: string = juriousProperties["defaultPaths"][type];
 
-    private getTypeList () : string[]{
-         return Object.keys(templates);
-    };
-
-
-    public handle (type:string , filename:string, options:any) :void {
-        // check type existence
-        if (!this.checkTemplate(type)) {
-            console.log('invalid type: ' + type);
-            console.log('valid types are: ' + JSON.stringify(this.getTypeList()));
-            return;
-        }
-        // read json data
-        let project_path:string|null = findFile(json_file);
-        if (project_path === null) {
-            console.log('failed to find '+ json_file);
-            return;
-        }
-        chdir(project_path);
-
-        let json_obj = readJsonFile(`${process.cwd()}${sep}${json_file}`);
-        if (json_obj === null || !("defaultPaths" in json_obj)) {
-            console.log(`failed to parse ${json_file}`);
-            return;
-        }
-        // get file path
-        let path:string;
         if (options && options.path) {
-            path = options.path
-        } else  {
-            if (!(type in json_obj["defaultPaths"])) {
-                console.log(`failed to find path in ${json_file}`);
-                return;
-            }
-            path = json_obj["defaultPaths"][type];
+            path = options.path;
         }
+        
         // build the path if isn't exist
         touchDir(path);
-        // define filename
-        let className = (options && options.strict) ? filename : filename+type[0].toUpperCase() + type.slice(1).toLowerCase();
-        // write file from template
-        let template: IFileTemplate | null = this.getTemplate(type);
-        let generator = new TemplateGenerator();
-        if (template !== null) {
-            if (generator.writeTSFileFromTemplate(path, className, template)) {
-                this.editApp(json_obj["defaultPaths"]["app"], type, className, path);
-            }
-        } else {
-            console.log('failed to get ' + type + " template.");
-        }
+        
+        let template = (new templates[type](filename)).generate();
+        path = resolve(path, `${filename}${type[0].toUpperCase()}${type.slice(1)}.ts`);
+        writeFileSync(openSync(path, 'w'), template);
     }
 
 }
