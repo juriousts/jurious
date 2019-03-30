@@ -20,6 +20,7 @@ export class ClassTemplate implements ITemplate {
         this.interfaces = [];
         this.methods = [];
         this.props = "";
+        this.decorators = [];
     }
 
     private get ParentClass(): string {
