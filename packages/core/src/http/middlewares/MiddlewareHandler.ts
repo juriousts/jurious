@@ -26,6 +26,6 @@ export class MiddlewareHandler {
             }
 
             return resolve(true);
-        }).catch((reason: any) => false);
+        });
     }
 }

@@ -34,6 +34,6 @@ export class RequestHandler {
             controllerInstance.Response = this.response;
 
             controllerInstance[this.method]();
-        }).catch((reason: any) => this.response);
+        });
     }
 }
