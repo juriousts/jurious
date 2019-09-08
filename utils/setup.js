@@ -1,44 +1,51 @@
-const { execSync } = require('child_process');
-const { readdirSync, readFileSync, existsSync } = require('fs');
-const { resolve } = require('path');
+const { execSync } = require("child_process");
+const { readdirSync, readFileSync, existsSync } = require("fs");
+const { resolve } = require("path");
 const { Graph, alg } = require("@dagrejs/graphlib");
 
-const setupFile = 'setup.json';
+const setupFile = "setup.json";
 let filesGraph = new Graph();
 
-const packagesDir = resolve(__dirname, '..', 'packages');
+const packagesDir = resolve(__dirname, "..", "packages");
 const packages = readdirSync(packagesDir);
 for (let package of packages) {
-    const setupFilePath = resolve(packagesDir, package, setupFile);
-    if (!existsSync(setupFilePath)) {
-        continue;
-    }
+	const setupFilePath = resolve(packagesDir, package, setupFile);
+	if (!existsSync(setupFilePath)) {
+		continue;
+	}
 
-    let file = JSON.parse(readFileSync(setupFilePath).toString());
+	let file = JSON.parse(readFileSync(setupFilePath).toString());
 
-    file.path = resolve(packagesDir, package);
-    filesGraph.setNode(file.id, file);
+	file.path = resolve(packagesDir, package);
+	filesGraph.setNode(file.id, file);
 }
 
 for (let node of filesGraph.nodes()) {
-    let file = filesGraph.node(node);
-    for (let dep of file.dependancies) {
-        filesGraph.setEdge(node, dep);
-    }
+	let file = filesGraph.node(node);
+	for (let dep of file.dependancies) {
+		filesGraph.setEdge(node, dep);
+	}
 }
 
 let nodes = alg.topsort(filesGraph).reverse();
 
 for (node of nodes) {
-    let file = filesGraph.node(node);
+	let file = filesGraph.node(node);
 
-    // process.chdir(file.path);
-    console.info(`------------------------------------------------`);
-    console.info(`- Installing module: ${file.title}             -`);
-    for (command of file.commands) {
-        console.info(`- Running command: ${command}                  -`);
-        console.info(`------------------------------------------------`);
-        console.info(execSync(command).toString());
-        console.info(`------------------------------------------------\n`);
-    }
+	process.chdir(file.path);
+	console.info(`Unlinking: ${execSync("npm unlink").toString()}`);
+	console.info(
+		`Removing node_modules: ${execSync(
+			"rm -rf ./node_modules package-lock.json"
+		).toString()}`
+	);
+
+	console.info(`------------------------------------------------`);
+	console.info(`- Installing module: ${file.title}             -`);
+	for (command of file.commands) {
+		console.info(`- Running command: ${command}                  -`);
+		console.info(`------------------------------------------------`);
+		console.info(execSync(command).toString());
+		console.info(`------------------------------------------------\n`);
+	}
 }

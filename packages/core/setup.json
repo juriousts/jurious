@@ -1,11 +1,13 @@
 {
-    "id": 3,
-    "dependancies": [4, 5],
-    "title": "Jurious Core",
-    "commands": [
-        "npm i",
-        "npm link ../router",
-        "npm link ../await",
-        "npm run dev"        
-    ]
+	"id": 3,
+	"dependancies": [4, 5, 6],
+	"title": "Jurious Core",
+	"commands": [
+		"npm i",
+		"npm link",
+		"npm link @jurious/await",
+		"npm link @jurious/router",
+		"npm link @jurious/source-map-fix",
+		"npm run dev"
+	]
 }

@@ -1,10 +1,6 @@
 {
-    "id": 4,
-    "dependancies": [],
-    "title": "Jurious Router",
-    "commands": [
-        "npm i",
-        "npm run dev",
-        "npm link"
-    ]
+	"id": 4,
+	"dependancies": [],
+	"title": "Jurious Router",
+	"commands": ["npm i", "npm run dev", "npm link"]
 }

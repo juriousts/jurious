@@ -1,34 +1,35 @@
 {
-    "name": "@jurious/cli",
-    "version": "1.0.15",
-    "description": "",
-    "main": "dist/bundle.js",
-    "types": "dist/index.d.ts",
-    "bin": {
-        "jurious": "dist/bundle.js"
-    },
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "clean-webpack-plugin": "^0.1.19",
-        "commander": "^2.17.1",
-        "file-loader": "^2.0.0",
-        "source-map-loader": "^0.2.4",
-        "ts-loader": "^4.5.0",
-        "uglifyjs-webpack-plugin": "^1.3.0",
-        "webpack": "^4.17.1",
-        "webpack-cli": "^3.1.0",
-        "webpackbar": "^2.6.3"
-    },
-    "devDependencies": {
-        "@jurious/webpack-declaration-files": "^1.0.0",
-        "@types/node": "^10.5.7",
-        "typescript": "^3.0.1",
-        "webpack-node-externals": "^1.7.2"
-    }
+	"name": "@jurious/cli",
+	"version": "1.0.15",
+	"description": "",
+	"main": "dist/bundle.js",
+	"types": "dist/index.d.ts",
+	"bin": {
+		"jurious": "dist/bundle.js"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "webpack"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"clean-webpack-plugin": "0.1.19",
+		"commander": "^2.17.1",
+		"file-loader": "2.0.0",
+		"source-map-loader": "0.2.4",
+		"uglifyjs-webpack-plugin": "2.2.0",
+		"ts-loader": "^6.0.4",
+		"webpack": "^4.39.3",
+		"webpack-cli": "^3.3.7",
+		"webpackbar": "2.6.3"
+	},
+	"devDependencies": {
+		"@jurious/webpack-declaration-files": "^1.0.0",
+		"@types/node": "^10.5.7",
+		"terser-webpack-plugin": "^1.4.1",
+		"typescript": "^3.5.2",
+		"webpack-node-externals": "^1.7.2"
+	}
 }

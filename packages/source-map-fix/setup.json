@@ -1,0 +1,6 @@
+{
+	"id": 6,
+	"dependancies": [],
+	"title": "Jurious Source Map Fix",
+	"commands": ["npm i", "npm link"]
+}

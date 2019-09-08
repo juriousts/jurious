@@ -1,9 +1,6 @@
 {
-    "id": 1,
-    "dependancies": [],
-    "title": "Jurious Templates",
-    "commands": [
-        "npm i",
-        "npm run dev"        
-    ]
+	"id": 1,
+	"dependancies": [],
+	"title": "Jurious Templates",
+	"commands": ["npm i", "npm run dev", "npm link"]
 }

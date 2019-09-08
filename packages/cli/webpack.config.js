@@ -6,6 +6,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
 const WebpackBar = require("webpackbar");
 const DeclarationFilesPlugin = require("@jurious/webpack-declaration-files");
+const TerserPlugin = require("terser-webpack-plugin");
 
 // Clean configurations
 const clean_paths = ["dist"];
@@ -21,16 +22,25 @@ module.exports = {
 			{
 				test: /\.ts$/,
 				use: "ts-loader"
-            }
-        ]
+			}
+		]
 	},
 	externals: [
-        nodeExternals({
+		nodeExternals({
 			modulesFromFile: true
 		})
-    ],
+	],
 	optimization: {
-		minimize: false
+		minimizer: [
+			new TerserPlugin({
+				cache: true,
+				parallel: true,
+				terserOptions: {
+					keep_classnames: true,
+					keep_fnames: false
+				}
+			})
+		]
 	},
 	resolve: {
 		extensions: [".ts", ".js"]
@@ -46,20 +56,20 @@ module.exports = {
 		__dirname: false,
 		__filename: false
 	},
-	mode: "production",
+	mode: "development",
 	plugins: [
-        new CleanWebpackPlugin(clean_paths, clean_options),
-        new UglifyJsPlugin(),
-        new WebpackBar({
+		new CleanWebpackPlugin(clean_paths, clean_options),
+		// new UglifyJsPlugin(),
+		new WebpackBar({
 			name: "Jurious"
 		}),
-        new DeclarationFilesPlugin({
+		new DeclarationFilesPlugin({
 			merge: true,
 			include: ["CommandAbstract", "IOption"]
 		}),
-        new webpack.BannerPlugin({
+		new webpack.BannerPlugin({
 			banner: "#!/usr/bin/env node",
 			raw: true
 		})
-    ]
+	]
 };

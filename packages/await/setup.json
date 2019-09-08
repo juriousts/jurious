@@ -1,8 +1,6 @@
 {
-    "id": 5,
-    "dependancies": [],
-    "title": "Jurious Await",
-    "commands": [
-        "npm i"        
-    ]
+	"id": 5,
+	"dependancies": [],
+	"title": "Jurious Await",
+	"commands": ["npm i", "npm run dev", "npm link"]
 }

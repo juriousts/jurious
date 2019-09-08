@@ -1,11 +1,11 @@
 {
-    "id": 2,
-    "dependancies": [1],
-    "title": "Jurious CLI",
-    "commands": [
-        "npm i",
-        "npm link ../templates",
-        "npm run build",
-        "npm i -g ."
-    ]
+	"id": 2,
+	"dependancies": [1],
+	"title": "Jurious CLI",
+	"commands": [
+		"npm i",
+		"npm link @jurious/templates",
+		"npm run build",
+		"npm i -g ."
+	]
 }

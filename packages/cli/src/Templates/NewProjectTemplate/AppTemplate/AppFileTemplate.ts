@@ -1,16 +1,14 @@
-import { AppClassTemplate } from './AppClassTemplate';
-import { FileTemplate, ImportTemplate } from '@jurious/templates';
+import { AppClassTemplate } from "./AppClassTemplate";
+import { FileTemplate, ImportTemplate } from "@jurious/templates";
 
 export class AppFileTemplate extends FileTemplate {
-    constructor(name: string) {
-        super(name);
+	constructor(name: string) {
+		super(name);
 
-        this.imports = [
-            new ImportTemplate(['JuriousApp', 'AppAbstract'], '@jurious/core')
-        ];
+		this.imports = [
+			new ImportTemplate(["JuriousApp", "AppAbstract"], "@jurious/core")
+		];
 
-        this.classes = [
-            new AppClassTemplate()
-        ];
-    }   
+		this.classes = [new AppClassTemplate()];
+	}
 }
