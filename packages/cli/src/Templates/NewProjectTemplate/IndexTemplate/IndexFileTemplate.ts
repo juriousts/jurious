@@ -10,7 +10,7 @@ export class IndexFileTemplate extends FileTemplate {
 			new ImportTemplate(["App"], "./App")
 		];
 
-		this.global = `let app = new App();
-        app.bootstrap()`;
+		this.global = `const app = new App();
+app.bootstrap();`;
 	}
 }

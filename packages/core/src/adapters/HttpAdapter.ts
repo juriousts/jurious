@@ -1,7 +1,7 @@
+import { RequestBuilder } from "./../http/RequestBuilder";
 import { NetworkAdapter } from "./NetworkAdapter";
 import { ResponseSender } from "./../http/ResponseSender";
 import * as http from "http";
-import { RequestHandler } from "../http/RequestHandler";
 import { Request } from "../http/Request";
 import { Response } from "../http/Response";
 import { RouteInstance } from "@jurious/router";
@@ -39,31 +39,31 @@ export class HttpAdapter extends NetworkAdapter {
 				let request = new Request(req, route);
 				let response = new Response();
 
-				let middlewareHandler = new MiddlewareHandler(
-					request,
-					response
-				);
+				// let middlewareHandler = new MiddlewareHandler(
+				// 	request,
+				// 	response
+				// );
 
-				const [middlewareError, middlewareResult] = await to(
-					middlewareHandler.handle()
-				);
-				if (!middlewareResult) {
-					res.write("didnt pass middleware");
-					res.end();
-					return;
-				}
+				// const [middlewareError, middlewareResult] = await to(
+				// 	middlewareHandler.handle()
+				// );
+				// if (!middlewareResult) {
+				// 	res.write("didnt pass middleware");
+				// 	res.end();
+				// 	return;
+				// }
 
-				let requestHandler = new RequestHandler(request, response);
+				let requestBuilder = new RequestBuilder(request, response);
+				const runner: (
+					request: Request,
+					response: Response
+				) => Promise<Response> = requestBuilder.build();
 
-				const [requestError, requestResult] = await to(
-					requestHandler.handle()
-				);
-				if (requestResult) {
-					new ResponseSender(requestResult as Response, res).send();
-				} else {
-					res.write("rejected");
-					res.end();
-				}
+				const [err, data] = await to(runner(request, response));
+
+				const finalRes = err || data;
+
+				new ResponseSender(finalRes as Response, res).send();
 			})
 			.listen(this.port, () => {});
 	}

@@ -1,5 +1,5 @@
-import { AppFileTemplate } from "./../Templates/NewProjectTemplate/AppTemplate/AppFileTemplate";
-import { ApiFileTemplate } from "./../Templates/NewProjectTemplate/ApiTemplate/ApiFileTemplate";
+import { AppFileTemplate } from "../Templates/NewProjectTemplate/AppTemplate/AppFileTemplate";
+import { ApiFileTemplate } from "../Templates/NewProjectTemplate/ApiTemplate/ApiFileTemplate";
 import { FolderTemplate, JsonFileTemplate } from "@jurious/templates";
 import { execSync } from "child_process";
 import { CommandAbstract } from "./CommandAbstract";
@@ -72,7 +72,7 @@ export class NewProjectCommand extends CommandAbstract {
 			.addFile(new AppFileTemplate("app.ts"));
 
 		projFolder
-			.addFolder("App/Http/Routes")
+			.addFolder("app/http/routes")
 			.addFile(new ApiFileTemplate("api.ts"));
 
 		projFolder.generate();

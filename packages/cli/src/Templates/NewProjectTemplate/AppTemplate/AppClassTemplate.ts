@@ -1,30 +1,17 @@
-import { JuriousAppDecoratorTemplate } from './JuriousAppDecoratorTemplate';
-import { ClassTemplate } from '@jurious/templates';
-import { AppConstructorMethodTemplate } from './AppConstructorMethodTemplate';
+import { JuriousAppDecoratorTemplate } from "./JuriousAppDecoratorTemplate";
+import { ClassTemplate } from "@jurious/templates";
+import { AppConstructorMethodTemplate } from "./AppConstructorMethodTemplate";
 
 export class AppClassTemplate extends ClassTemplate {
-    constructor() {
-        super();
+	constructor() {
+		super();
 
-        this.preName = "export";
-        this.parentClass = "AppAbstract";
-        this.name = 'App';
+		this.preName = "export";
+		this.parentClass = "AppAbstract";
+		this.name = "App";
 
-        this.methods = [
-            new AppConstructorMethodTemplate(),
-        ];
+		this.methods = [new AppConstructorMethodTemplate()];
 
-        this.decorators = [
-            new JuriousAppDecoratorTemplate()        
-        ];
-    }
-
-    
+		this.decorators = [new JuriousAppDecoratorTemplate()];
+	}
 }
-
-// export class App extends AppAbstract {
-// 	constructor() {
-// 		super();
-// 	}
-
-// }
