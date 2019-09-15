@@ -5,12 +5,12 @@ import {
 	writeFileSync,
 	openSync
 } from "fs";
-import { sep, resolve } from "path";
+import { sep, resolve, join } from "path";
 import * as templates from "../Templates";
 import { CommandAbstract } from "./CommandAbstract";
 import { ProjectPathMiddleware } from "../Middlewares/ProjectPathMiddleware";
 import { TemplateTypeMiddleware } from "../Middlewares/TemplateTypeMiddleware";
-import { touchDir } from "../Common/FileSystem";
+import { touchDir, findFile } from "../Common/FileSystem";
 
 export class GenerateCommand extends CommandAbstract {
 	constructor() {
@@ -83,11 +83,35 @@ export class GenerateCommand extends CommandAbstract {
 		// build the path if isn't exist
 		touchDir(path);
 
+		let fixedFilename = `${filename}${type[0].toUpperCase()}${type.slice(
+			1
+		)}`;
+
 		let template = new templates[type](filename).generate();
-		path = resolve(
+		let absPath = resolve(path, `${fixedFilename}.ts`);
+		writeFileSync(openSync(absPath, "w"), template);
+
+		let regex = /import/g;
+		let appFileContent = readFileSync(openSync("app.ts", "r")).toString();
+
+		let match = null;
+		let maxIndex = -1;
+		while ((match = regex.exec(appFileContent)) != null) {
+			maxIndex = match.index;
+		}
+
+		let inputPosition = appFileContent.indexOf(";", maxIndex) + 2;
+		let targetString = `import { ${fixedFilename} } from "./${join(
 			path,
-			`${filename}${type[0].toUpperCase()}${type.slice(1)}.ts`
-		);
-		writeFileSync(openSync(path, "w"), template);
+			fixedFilename
+		)}";\n`;
+
+		let updatedFileContent = [
+			appFileContent.slice(0, inputPosition),
+			targetString,
+			appFileContent.slice(inputPosition)
+		].join("");
+
+		writeFileSync(openSync("app.ts", "w"), updatedFileContent);
 	}
 }
