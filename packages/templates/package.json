@@ -16,12 +16,12 @@
 		"@jurious/webpack-declaration-files": "^1.0.0",
 		"@types/node": "10.5.1",
 		"clean-webpack-plugin": "0.1.19",
-		"source-map-loader": "0.2.4",
+		"source-map-loader": "4.0.1",
 		"terser-webpack-plugin": "^1.4.1",
-		"ts-loader": "^6.0.4",
+		"ts-loader": "^9.4.2",
 		"typescript": "^3.5.2",
-		"webpack": "^4.39.3",
-		"webpack-cli": "^3.3.7",
+		"webpack": "^5.75.0",
+		"webpack-cli": "^5.0.1",
 		"uglifyjs-webpack-plugin": "2.2.0"
 	},
 	"dependencies": {}
